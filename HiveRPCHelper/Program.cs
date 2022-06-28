@@ -2,34 +2,45 @@ using System.IO;
 using System;
 using System.Threading;
 using DiscordRPC;
-class ReadFromFile
+
+public class ReadFromFile
 {
     public static void Main()
     {
-        var localappdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string OnixClientFolder = localappdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/RoamingState/OnixClient/Scripts/Data/";
+        Code:
 
-        string username = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
-        string gamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
-
-
-
-        RPC.Setup();
-        RPC.Start(gamemode, username);
-
-        while (true)
+        try 
         {
-            Thread.Sleep(2500);
+            var localappdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            string OnixClientFolder = localappdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/RoamingState/OnixClient/Scripts/Data/";
 
-            string newGamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
-            string newUsername = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
+            string username = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
+            string gamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
+    
+            RPC.Setup();
+            RPC.Start(gamemode, username);
 
-            RPC.Client.UpdateState(newUsername);
-            RPC.Client.UpdateDetails(newGamemode);
+            while (true)
+            {
+                Thread.Sleep(2500);
+
+                string newGamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
+                string newUsername = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
+
+                RPC.Client.UpdateState(newUsername);
+                RPC.Client.UpdateDetails(newGamemode);
+                Console.Clear();
+                Console.WriteLine(newUsername);
+                Console.WriteLine(newGamemode);
+
+            }
+        } catch (Exception E) {
+            Console.WriteLine("RPC Error:");
+            Console.WriteLine(E.Message);
+            Console.WriteLine("Press any key to continue");
+            Console.ReadKey();
             Console.Clear();
-            Console.WriteLine(newUsername);
-            Console.WriteLine(newGamemode);
-
+            goto Code;
         }
     }
 }
@@ -40,7 +51,6 @@ public static class RPC
     public static RichPresence LastPresence;
 
     public static void Setup()
-
     {
         Client = new DiscordRpcClient("990689374054256691");
         Client.Initialize();
@@ -58,24 +68,14 @@ public static class RPC
             {
                 LargeImageKey = "hive-logo",
                 LargeImageText = "Playing on the Hive"
+            },
+            Timestamps = new Timestamps()
+            {
+                Start = DateTime.UtcNow
             }
         };
 
         LastPresence = presence;
-        presence.Timestamps = new Timestamps()
-        {
-            Start = DateTime.UtcNow
-        };
-
-        Client.SetPresence(presence);
-
-    }
-
-    public static void Update(string Details)
-    {
-        var presence = LastPresence;
-
-        presence.Details = Details;
 
         Client.SetPresence(presence);
     }
