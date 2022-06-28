@@ -3,11 +3,14 @@ using System;
 using System.Threading;
 using DiscordRPC;
 
-class ReadFromFile
+public class ReadFromFile
 {
     public static void Main()
     {
-        try {
+        Code:
+
+        try 
+        {
             var localappdata = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             string OnixClientFolder = localappdata + "/Packages/Microsoft.MinecraftUWP_8wekyb3d8bbwe/RoamingState/OnixClient/Scripts/Data/";
 
@@ -31,9 +34,13 @@ class ReadFromFile
                 Console.WriteLine(newGamemode);
 
             }
-        } catch (exception E) {
-            System.Windows.Messagebox.Show()(E.Message);
+        } catch (Exception E) {
+            Console.WriteLine("RPC Error:");
+            Console.WriteLine(E.Message);
+            Console.WriteLine("Press any key to continue");
             Console.ReadKey();
+            Console.Clear();
+            goto Code;
         }
     }
 }
@@ -44,7 +51,6 @@ public static class RPC
     public static RichPresence LastPresence;
 
     public static void Setup()
-
     {
         Client = new DiscordRpcClient("990689374054256691");
         Client.Initialize();
@@ -66,12 +72,11 @@ public static class RPC
             Timestamps = new Timestamps()
             {
                 Start = DateTime.UtcNow
-            };
+            }
         };
 
         LastPresence = presence;
 
         Client.SetPresence(presence);
-
     }
 }
