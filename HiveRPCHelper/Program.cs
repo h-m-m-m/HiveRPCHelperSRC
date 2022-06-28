@@ -27,8 +27,8 @@ class ReadFromFile
             RPC.Client.UpdateState(newUsername);
             RPC.Client.UpdateDetails(newGamemode);
             Console.Clear();
-            Console.WriteLine("As " + newUsername);
-            Console.WriteLine("Updated to " + newGamemode);
+            Console.WriteLine(newUsername);
+            Console.WriteLine(newGamemode);
 
         }
     }
