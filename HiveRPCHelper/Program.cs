@@ -7,6 +7,8 @@ public class ReadFromFile
 {
     public static void Main()
     {
+        RPC.Setup();
+        
         Code:
 
         try 
@@ -17,7 +19,6 @@ public class ReadFromFile
             string username = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
             string gamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
     
-            RPC.Setup();
             RPC.Start(gamemode, username);
 
             while (true)
@@ -37,9 +38,6 @@ public class ReadFromFile
         } catch (Exception E) {
             Console.WriteLine("RPC Error:");
             Console.WriteLine(E.Message);
-            Console.WriteLine("Press any key to continue");
-            Console.ReadKey();
-            Console.Clear();
             goto Code;
         }
     }
