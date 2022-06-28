@@ -24,8 +24,8 @@ class ReadFromFile
             string newGamemode = File.ReadAllText(OnixClientFolder + "HiveRPCHelperGamemode.txt");
             string newUsername = File.ReadAllText(OnixClientFolder + "HiveRPCHelperUsername.txt");
 
-            RPC.Client.UpdateDetails(newGamemode);
-            RPC.Client.UpdateDetails(newUsername);
+            RPC.Client.UpdateState("As " + newUsername);
+            RPC.Client.UpdateDetails("Playing " + newGamemode);
             Console.Clear();
             Console.WriteLine("As " + newUsername);
             Console.WriteLine("Updated to " + newGamemode);
